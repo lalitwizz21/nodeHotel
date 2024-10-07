@@ -1,23 +1,23 @@
 const express = require("express");
 require("dotenv").config();
-const db = require("./db.js");
+require("./db");
+const passport = require("./auth.js");
 
 const app = express();
 app.use(express.json());
 
-const logging = (req, res, next) => {
-  console.log(`[${new Date().toLocaleString()}] - ${req.path}`);
-  next();
-}
+// Initialized the passport.
+app.use(passport.initialize());
 
-app.use(logging);
+const personAuthenticator = passport.authenticate("local", { session: false });
 
 app.get("/", (req, res) => {
+  console.log("Request for the '/' route.");
   res.send("Welcome to the home page...");
 });
 
 const personRoutes = require("./routes/person.js");
-app.use("/person", personRoutes);
+app.use("/person", personAuthenticator, personRoutes);
 
 const menuRoutes = require("./routes/menu.js");
 app.use("/menu", menuRoutes);
