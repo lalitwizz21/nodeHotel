@@ -2,8 +2,6 @@ const passport = require("passport");
 const Person = require("./models/Person");
 const LocalStrategy = require("passport-local").Strategy;
 
-console.log("in auth file");
-
 // created a local username and password authentication.
 passport.use(
   new LocalStrategy(async (username, password, done) => {

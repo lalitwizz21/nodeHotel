@@ -2,6 +2,7 @@ const express = require("express");
 require("dotenv").config();
 require("./db");
 const passport = require("./auth.js");
+const { jwtAuthMiddleware } = require("./jwt.js");
 
 const app = express();
 app.use(express.json());
@@ -17,7 +18,7 @@ app.get("/", (req, res) => {
 });
 
 const personRoutes = require("./routes/person.js");
-app.use("/person", personAuthenticator, personRoutes);
+app.use("/person", jwtAuthMiddleware, personRoutes);
 
 const menuRoutes = require("./routes/menu.js");
 app.use("/menu", menuRoutes);
